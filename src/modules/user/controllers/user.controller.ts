@@ -63,7 +63,6 @@ async getUserByUsername(@Query() q: GetOneUsernameQuery) {
   try {
 
     let user = await this.userService.findOneUserByUsername(q?.user_name);
-    console.log("show1,",user)
     if (!user) {
       throw new HttpException(`User Not Found`, HttpStatus.NOT_FOUND);
     }
@@ -80,7 +79,6 @@ async getUserByUsername(@Query() q: GetOneUsernameQuery) {
 @Post('/sign/login')
 @HttpCode(HttpStatus.OK)
 async login(@Request()req:any){
-  console.log("random bullshit go")
   return req.user
 }
 }
