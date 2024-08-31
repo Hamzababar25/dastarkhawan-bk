@@ -9,6 +9,7 @@ import { UserController } from './modules/user/controllers/user.controller';
 import { UserService } from './modules/user/services/user.service';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './modules/auth/services/auth.service';
+import { LocalStrategy } from './modules/auth/local.strategy';
 
 
 @Module({
@@ -17,6 +18,6 @@ import { AuthService } from './modules/auth/services/auth.service';
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),TypeOrmModule.forFeature([User]),
   PassportModule],
   controllers: [AppController,UserController],
-  providers: [AppService,UserService,AuthService],
+  providers: [AppService,UserService,AuthService,LocalStrategy],
 })
 export class AppModule {}
