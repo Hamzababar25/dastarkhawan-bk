@@ -48,8 +48,8 @@ class ConfigService {
 
 
 
-            ssl: true,
-    //synchronize: true,
+           // ssl: true,
+    synchronize: true,
             autoLoadEntities: true,
            // logging: true,
 
