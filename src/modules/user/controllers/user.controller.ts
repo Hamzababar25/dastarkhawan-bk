@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import { LocalAuthGuard } from 'src/modules/auth/local-auth.guard';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { AuthService } from 'src/modules/auth/services/auth.service';
+import { JwtAuthGuard } from 'src/modules/auth/jwt-auth.guard';
 
 
 
@@ -79,6 +80,13 @@ async getUserByUsername(@Query() q: GetOneUsernameQuery) {
 @Post('/sign/login')
 @HttpCode(HttpStatus.OK)
 async login(@Request()req:any){
+  return this.authService.login(req.user)
+}
+
+@UseGuards(JwtAuthGuard)
+@Get('protected')
+@HttpCode(HttpStatus.OK)
+getjwt(@Request()req):string{
   return req.user
 }
 }

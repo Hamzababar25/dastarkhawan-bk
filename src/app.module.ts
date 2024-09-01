@@ -11,15 +11,19 @@ import { LocalStrategy } from './modules/auth/local.strategy';
 import { configService } from './config/config.service';
 import { User } from './modules/user/entites/user.entity';
 import { UserService } from './modules/user/services/user.service';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './modules/auth/jwt.strategy';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     TypeOrmModule.forFeature([User]),
-    PassportModule,
+    PassportModule,JwtModule.register({
+      secret:"SECRET",signOptions:{expiresIn:'60s'},
+    })
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService, AuthService, LocalStrategy],
+  providers: [AppService, UserService, AuthService, LocalStrategy,JwtStrategy],
 })
 export class AppModule {}
