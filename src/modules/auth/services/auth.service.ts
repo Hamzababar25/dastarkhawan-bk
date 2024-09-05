@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/modules/user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { MailerService } from '@nestjs-modules/mailer';
+
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService,private readonly jwtService: JwtService) {}
+  constructor(private readonly userService: UserService,private readonly jwtService: JwtService,private readonly mailService: MailerService) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     
@@ -24,4 +26,18 @@ export class AuthService {
    return{ access_token: this.jwtService.sign(payload), 
   }
 }
+
+
+// sendMail(mail:any,message:string) {
+//   // const message = `Forgot your password? If you didn't forget your password, please ignore this email!`;
+
+//   this.mailService.sendMail({
+//     from: 'Hamza Babar <hamzabava70@gmil.com.com>',
+//     to: mail,
+//     subject: `Reset Password Mail`,
+//     text: message,
+//   });
+// }
+
+
 }
