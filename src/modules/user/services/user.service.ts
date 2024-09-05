@@ -24,4 +24,7 @@ export class UserService {
   async findOneUserByMail(mail: string): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { mail } });
   }
+  async updateUserPassword(userId: string, hashedPassword: string): Promise<void> {
+    await this.userRepository.update({ id: userId }, { password: hashedPassword });
+  }
 }

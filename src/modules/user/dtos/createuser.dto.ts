@@ -37,3 +37,15 @@ export class GetOneUsernameQuery {
   })
   public readonly user_name: string;
 }
+@Exclude()
+export class UpdatePasswordDto {
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+  
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  newPassword: string;
+}

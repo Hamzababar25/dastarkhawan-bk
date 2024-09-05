@@ -38,7 +38,7 @@ export class AuthController {
     }
     console.log(mail,"show33")
     // Construct the password reset link (you need to replace this with your actual frontend URL)
-    const resetLink = `https://your-frontend-url.com/reset-password?email=${email}`;
+    const resetLink = `http://localhost:3000/auth/resetPassword?email=${email}`;
 
     // Define the message with the reset link
     const message = `Forgot your password? If you didn't forget your password, please ignore this email. Otherwise, click the link below to reset your password: \n\n ${resetLink}`;
@@ -53,7 +53,7 @@ export class AuthController {
      })
 
     return {
-      message: 'Password reset email sent successfully',info,
+      message: 'Password reset email  successfully',info,
     };
   }
   catch (e) {
