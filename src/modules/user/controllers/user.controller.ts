@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException,Request, HttpStatus, Logger, NotFoundException, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseInterceptors, UsePipes, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException,Request, HttpStatus, Logger, NotFoundException, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseInterceptors, UsePipes, UseGuards, Patch } from '@nestjs/common';
 import { InvalidRequestValidator } from 'src/common/pipes/invalid-request-validator';
-import { CreateUserDto, GetOneUsernameQuery, UpdatePasswordDto } from '../dtos/createuser.dto';
+import { CreateUserDto, GetOneUsernameQuery, UpdatePasswordDto, UpdateUserDto } from '../dtos/createuser.dto';
 import { UserService } from '../services/user.service';
 import { LocalAuthGuard } from 'src/modules/auth/local-auth.guard';
 import { IsNotEmpty, IsString } from 'class-validator';
@@ -123,6 +123,24 @@ async changePassword(
     );
   }
 }
+
+
+@HttpCode(HttpStatus.OK)
+@UsePipes(new InvalidRequestValidator())
+@Patch(':id')
+async updateUser(
+  @Query('id') id: string,
+  @Body() updateUserDto: UpdateUserDto
+) {
+  try{
+  return await this.userService.updateUser(id, updateUserDto);
+  }
+  catch (e) {
+    this.logger.error(e);
+    throw e;
+  }
+}
+
 }
 
 
