@@ -15,6 +15,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './modules/auth/jwt.strategy';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthController } from './modules/auth/controllers/auth.controller';
+import { MemberController } from './modules/members/controllers/members.controllers';
+import { MemberService } from './modules/members/services/members.service';
+import { Member } from './modules/members/entites/members.entity';
 
 
 @Module({
@@ -22,7 +25,7 @@ import { AuthController } from './modules/auth/controllers/auth.controller';
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User,Member]),
     PassportModule,JwtModule.register({
       secret:"SECRET",signOptions:{expiresIn:'60s'},
     }),
@@ -37,7 +40,7 @@ import { AuthController } from './modules/auth/controllers/auth.controller';
       },
     }),
   ],
-  controllers: [AppController, UserController,AuthController],
-  providers: [AppService, UserService, AuthService, LocalStrategy,JwtStrategy],
+  controllers: [AppController, UserController,AuthController,MemberController],
+  providers: [AppService, UserService, AuthService, LocalStrategy,JwtStrategy,MemberService],
 })
 export class AppModule {}
