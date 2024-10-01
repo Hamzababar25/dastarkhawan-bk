@@ -7,6 +7,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { AuthService } from 'src/modules/auth/services/auth.service';
 import { JwtAuthGuard } from 'src/modules/auth/jwt-auth.guard';
 import * as bcrypt from 'bcrypt';
+import { UploadFile, UploadPDF } from 'src/utils/file-uploading.utils';
 
 
 
@@ -141,6 +142,70 @@ async updateUser(
   }
 }
 
+
+
+@Post('create')
+//   @UsePipes(new InvalidRequestValidator())
+  @HttpCode(HttpStatus.CREATED)
+  async createMember(@Body() createuserDto: CreateUserDto) {
+    console.log('Incoming Data:', createuserDto);  // Debugging: log the request data
+  
+    try {
+      const { contract, letterhead, bankLetter, image, ...memberData } = createuserDto;
+      
+      console.log('Member Data without files:', memberData);  // Log member data without files
+      
+      let contractUrl: string = null;
+      let letterheadUrl: string = null;
+      let bankstatementUrl: string = null;
+      let imageUrl: string = null;
+
+
+      if (image) {
+        console.log('Image found, uploading...');  // Check if the image exists
+        imageUrl = await UploadFile(image);
+      }
+  
+      if (contract) {
+        console.log('Contract found, uploading...');  // Check if the contract exists
+        contractUrl = await UploadPDF(contract);
+        console.log("done")
+      }
+  
+      if (letterhead) {
+        console.log('Letterhead found, uploading...');  // Check if the letterhead exists
+        letterheadUrl = await UploadPDF(letterhead);
+      }
+  
+      if (bankLetter) {
+        console.log('Bank letter found, uploading...');  // Check if the bank letter exists
+        bankstatementUrl = await UploadPDF(bankLetter);
+      }
+  
+     
+  
+      console.log('Saving member data with uploaded files...');
+  
+      const newMember = await this.userService.create({
+        ...memberData,
+        contract: contractUrl,
+        letterhead: letterheadUrl,
+        bankLetter: bankstatementUrl,
+        image: imageUrl,
+      });
+  
+      console.log('User created successfully:', newMember);  // Log the created member
+  
+      return {
+        success: true,
+        message: 'User created successfully!',
+        data: newMember,
+      };
+    } catch (e) {
+      console.error('Error creating member:', e.message);  // Log any errors
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }
 
 

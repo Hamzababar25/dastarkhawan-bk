@@ -26,68 +26,56 @@ export class User {
   @Column({ length: 500, nullable: false })
   password: string;
 
-  @Column({ length: 500, nullable: true })
-  fullname: string;
+  
 
+  @Column({ length: 500, nullable: false })
+  fullname: string;
   @Column({ length: 500, nullable: true })
   image: string;
+  @Column({ length: 500, nullable: true })
+  location: string; // Link to space health page
 
+  @Column({ nullable: true })
+  role: string;
+
+  @Column({ nullable: true })
+  cnic: number;
+
+  @Column({ length: 500, nullable: true })
+  address: string;
+
+
+
+  
+
+ 
+
+  
   @Column({ length: 500, nullable: true })
   dob: string;
 
   @Column({ length: 20, nullable: true })
   phone: string;
 
-  @Column({ length: 500, nullable: true })
-  address: string;
+ 
+
+  
 
   @Column({ nullable: true })
-  cnic: number;
+  deptRole: string;
+ 
+  
 
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.STAFF,
-  })
-  role: UserRole;
-  @Column({
-    type: 'enum',
-    enum: DeptRole,
-    nullable: true, // Only relevant if the role is DEPTS
-  })
-  deptRole: DeptRole;
-  @Column({ length: 500, nullable: true })
-  location: string; // Link to space health page
-
-  @Column({ length: 500, nullable: true })
-  roleLink: string; // Link to department page
-
-  @Column({ length: 500, nullable: true })
-  birthdayLink: string; // Link to calendar
-
-  @Column({ length: 500, nullable: true })
-  emailLink: string; // Link to email
-
-  // @ManyToOne(() => Department, (department) => department.users)
-  // @JoinColumn({ name: 'department_id' })
-  // department: Department; // Link to department entity
-
-  // @ManyToOne(() => User, (user) => user.lineManagers)
-  // @JoinColumn({ name: 'line_manager_id' })
-  // lineManager: User; // Link to line manager profile
-
-  // @ManyToOne(() => User, (user) => user.delegates)
-  // @JoinColumn({ name: 'delegate_id' })
-  // delegate: User; // Link to delegate profile
+  
 
   @Column({ nullable: true })
   salary: number; // Salary amount
 
   @Column({ length: 500, nullable: true })
-  salarySlip: string; // Link to salary slip (visible only to self and line managers)
+  Delegate: string; // Link to salary slip (visible only to self and line managers)
 
   @Column({ length: 500, nullable: true })
-  recentExpenseClaim: string; // Link to recent expense claim
+  LineManager: string; 
 
   @Column({ length: 500, nullable: true })
   contract: string; // Attached PDF (contract)

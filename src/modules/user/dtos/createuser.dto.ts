@@ -73,32 +73,7 @@ export class UpdateUserDto {
   @IsString()
   letterhead?: string;
 }
-export class CreateUserDto extends UpdateUserDto {
-   @IsEmail()
-  @IsNotEmpty()
-  mail: string;
 
-  @IsString()
-  @MinLength(6)
-  @IsNotEmpty()
-  password: string;
-
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @IsEnum(UserRole)
-  @IsNotEmpty()
-  role: UserRole;
-
-  @IsOptional()
-  @IsEnum(DeptRole)
-  deptRole?: DeptRole;
-
-  @IsOptional()
-  @IsInt()
-  salary?: number;
-}
 
 
 
@@ -125,3 +100,68 @@ export class UpdatePasswordDto {
   newPassword: string;
 }
 
+@Exclude()
+export class CreateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  fullname: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
+
+  @IsOptional()
+  @IsString()
+  location?: string;
+
+  @IsOptional()
+  @IsString()
+  role?: string;
+
+  @IsOptional()
+  @IsInt()
+  cnic?: number;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  mail: string;
+
+  @IsOptional()
+  @IsString()
+  dob?: string;
+
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  deptRole?: string;
+
+  @IsOptional()
+  @IsInt()
+  salary?: number;
+
+  @IsOptional()
+  @IsString()
+  Delegate?: string;
+
+
+
+  @IsOptional()
+  @IsString()
+  contract?: string;
+
+  @IsOptional()
+  @IsString()
+  bankLetter?: string;
+
+  @IsOptional()
+  @IsString()
+  letterhead?: string;
+  
+}

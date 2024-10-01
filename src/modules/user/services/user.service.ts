@@ -38,4 +38,15 @@ export class UserService {
 
     return this.userRepository.save(user); // Save updated user
   }
+
+  async create(userData: CreateUserDto): Promise<User> {
+    const newMember = this.userRepository.create(userData);
+
+    // Ensure all required fields are filled out
+    if (!newMember.fullname || !newMember.mail) {
+      throw new Error('Missing required fields: fullname or mail');
+    }
+
+    return this.userRepository.save(newMember);
+  }
 }
