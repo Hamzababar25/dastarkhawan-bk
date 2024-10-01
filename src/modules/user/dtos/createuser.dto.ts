@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString, MinLength, IsUUID, IsOptional, Matches, IsInt, IsEnum } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsUUID, IsOptional, Matches, IsInt, IsEnum, IsNumber } from 'class-validator';
 import { DeptRole, UserRole } from '../entites/user.entity';
 
 
@@ -86,6 +86,14 @@ export class GetOneUsernameQuery {
     message: 'User name should not contain the "#" character.',
   })
   public readonly user_name: string;
+}
+
+@Exclude()
+export class GetOneById {
+  @Expose()
+  @IsString()
+ 
+  public readonly id: string;
 }
 @Exclude()
 export class UpdatePasswordDto {

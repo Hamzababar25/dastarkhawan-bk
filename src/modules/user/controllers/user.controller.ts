@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException,Request, HttpStatus, Logger, NotFoundException, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseInterceptors, UsePipes, UseGuards, Patch } from '@nestjs/common';
 import { InvalidRequestValidator } from 'src/common/pipes/invalid-request-validator';
-import { CreateUserDto, GetOneUsernameQuery, UpdatePasswordDto, UpdateUserDto } from '../dtos/createuser.dto';
+import { CreateUserDto, GetOneById, GetOneUsernameQuery, UpdatePasswordDto, UpdateUserDto } from '../dtos/createuser.dto';
 import { UserService } from '../services/user.service';
 import { LocalAuthGuard } from 'src/modules/auth/local-auth.guard';
 import { IsNotEmpty, IsString } from 'class-validator';
@@ -205,6 +205,29 @@ async updateUser(
       console.error('Error creating member:', e.message);  // Log any errors
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+
+
+
+
+  @Get('get/user')
+  @UsePipes(new InvalidRequestValidator())
+  @HttpCode(HttpStatus.OK)
+  async findOneBy( @Query() q: GetOneById){
+    try{
+    let user= await this.userService.findOneById(q?.id);
+    if(!user){
+      throw new HttpException(`User not found`, HttpStatus.NOT_FOUND)
+    }
+    return {
+      success: true,
+      result: user,
+    };
+  } catch (e) {
+    this.logger.error(e);
+    throw e;
+  }
   }
 }
 
