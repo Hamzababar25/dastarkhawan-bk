@@ -41,7 +41,7 @@ export class UserController {
 
 
 @Post('create')
-  // @UsePipes(new InvalidRequestValidator())
+  @UsePipes(new InvalidRequestValidator())
   @HttpCode(HttpStatus.OK)
 async create(@Body() createduser: CreateUserDto) {
   try{
