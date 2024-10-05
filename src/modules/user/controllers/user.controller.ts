@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException,Request, HttpStatus, Logger, NotFoundException, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseInterceptors, UsePipes, UseGuards, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException,Request, HttpStatus, Logger, NotFoundException, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseInterceptors, UsePipes, UseGuards, Patch, UnauthorizedException } from '@nestjs/common';
 import { InvalidRequestValidator } from 'src/common/pipes/invalid-request-validator';
 import { CreateUserDto, GetOneById, GetOneUsernameQuery, UpdatePasswordDto, UpdateUserDto } from '../dtos/createuser.dto';
 import { UserService } from '../services/user.service';
@@ -78,11 +78,32 @@ async getUserByUsername(@Query() q: GetOneUsernameQuery) {
     throw e;
   }
 }
+// @UseGuards(LocalAuthGuard)
+// @Post('/sign/login')
+// @HttpCode(HttpStatus.OK)
+// async login(@Request()req:any){
+//   return this.authService.login(req.user)
+// }
 @UseGuards(LocalAuthGuard)
 @Post('/sign/login')
 @HttpCode(HttpStatus.OK)
-async login(@Request()req:any){
-  return this.authService.login(req.user)
+async login(@Request() req: any) {
+  Logger.log('Login request received', 'AuthController');
+  Logger.log(`Received user: ${JSON.stringify(req.user)}`, 'AuthController');
+  
+  if (!req.user) {
+    Logger.error('User not found', 'AuthController');
+    throw new UnauthorizedException('Invalid credentials');
+  }
+
+  try {
+    const result = await this.authService.login(req.user);
+    Logger.log('Login successful', 'AuthController');
+    return result;
+  } catch (error) {
+    Logger.error(`Login error: ${error.message}`, 'AuthController');
+    throw error;
+  }
 }
 
 @UseGuards(JwtAuthGuard)

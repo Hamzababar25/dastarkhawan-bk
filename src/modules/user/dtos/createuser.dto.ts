@@ -114,6 +114,11 @@ export class CreateUserDto {
   @IsString()
   fullname: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  password: string;
+
   @IsOptional()
   @IsString()
   image?: string;
