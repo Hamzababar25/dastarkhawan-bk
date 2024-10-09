@@ -46,12 +46,51 @@ export class UserController {
 async create(@Body() createduser: CreateUserDto) {
   try{
  
+    const { contract, letterhead, bankLetter, image, ...memberData } = createduser;
+    console.log('Member Data without files:', memberData);  // Log member data without files
+      
+      let contractUrl: string = null;
+      let letterheadUrl: string = null;
+      let bankstatementUrl: string = null;
+      let imageUrl: string = null;
+
+
+      if (image) {
+        console.log('Image found, uploading...');  // Check if the image exists
+        imageUrl = await UploadFile(image);
+      }
   
-  const user = await this.userService.createUser(createduser);
+      if (contract) {
+        console.log('Contract found, uploading...');  // Check if the contract exists
+        contractUrl = await UploadPDF(contract);
+        console.log("done")
+      }
+  
+      if (letterhead) {
+        console.log('Letterhead found, uploading...');  // Check if the letterhead exists
+        letterheadUrl = await UploadPDF(letterhead);
+      }
+  
+      if (bankLetter) {
+        console.log('Bank letter found, uploading...');  // Check if the bank letter exists
+        bankstatementUrl = await UploadPDF(bankLetter);
+      }
+  
+     
+      const newMember = await this.userService.create({
+        ...memberData,
+        contract: contractUrl,
+        letterhead: letterheadUrl,
+        bankLetter: bankstatementUrl,
+        image: imageUrl,
+      });
+  
+      console.log('Saving member data with uploaded files...');
+  // const user = await this.userService.createUser(createduser);
 
   return{
     success: true,
-    result: user,
+    result: newMember,
    };
 }catch (e) {
   this.logger.error(e);

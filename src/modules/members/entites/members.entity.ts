@@ -1,5 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Member {
@@ -8,62 +13,72 @@ export class Member {
 
   @Column({ length: 500, nullable: false })
   fullname: string;
-  @Column({ length: 500, nullable: true })
-  image: string;
-  @Column({ length: 500, nullable: true })
-  location: string; // Link to space health page
 
   @Column({ nullable: true })
   role: string;
 
   @Column({ nullable: true })
-  cnic: number;
+  gender: string;
 
   @Column({ length: 500, nullable: true })
-  address: string;
+  site: string;
+
+  @Column({ length: 500, nullable: true })
+  floor: string;
+
+  @Column({ length: 500, nullable: true })
+  office: string;
+
+  @Column({ nullable: true })
+  dob: string;
+
+  @Column({ length: 20, nullable: true })
+  phoneNumber: string;
+
+  @Column({ length: 500, nullable: true })
+  facebook: string;
+
+  @Column({ length: 500, nullable: true })
+  linkedin: string;
+
+  @Column({ length: 500, nullable: true })
+  twitter: string;
+
+  @Column({ length: 500, nullable: true })
+  insta: string;
 
   @Column({ length: 500, nullable: false })
   mail: string;
 
-  
-
- 
-
-  
   @Column({ length: 500, nullable: true })
-  dob: string;
+  devices: string;
 
-  @Column({ length: 20, nullable: true })
-  phone: string;
+  @Column({ length: 500, nullable: true })
+  speed: string;
 
- 
+  @Column({ length: 500, nullable: false })
+  username: string;
 
-  
+  @Column({ length: 500, nullable: false })
+  password: string;
+
+  // Storing multiple personal info fields in JSON format
+  @Column('json', { nullable: true })
+  personalInfo: {
+    info1: string;
+    info2: string;
+    info3: string;
+    info4?: string;
+  };
 
   @Column({ nullable: true })
-  deptRole: string;
- 
-  
-
-  
+  tenure: string;
 
   @Column({ nullable: true })
-  salary: number; // Salary amount
+  monthlyInvoice: number;
 
-  @Column({ length: 500, nullable: true })
-  Delegate: string; // Link to salary slip (visible only to self and line managers)
-
-  @Column({ length: 500, nullable: true })
-  LineManager: string; 
-
-  @Column({ length: 500, nullable: true })
-  contract: string; // Attached PDF (contract)
-
-  @Column({ length: 500, nullable: true })
-  bankLetter: string; // Attached PDF (bank letter)
-
-  @Column({ length: 500, nullable: true })
-  letterhead: string; // Attached PDF (letterhead)
+  @Column({ nullable: true })
+  amount: number;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -30,7 +30,7 @@ export class User {
 
   @Column({ length: 500, nullable: false })
   fullname: string;
-  @Column({ length: 500, nullable: true })
+  @Column({ length: 5000, nullable: true })
   image: string;
   @Column({ length: 500, nullable: true })
   location: string; // Link to space health page
@@ -77,14 +77,22 @@ export class User {
   @Column({ length: 500, nullable: true })
   LineManager: string; 
 
-  @Column({ length: 500, nullable: true })
+  @Column({ length: 5000, nullable: true })
   contract: string; // Attached PDF (contract)
 
-  @Column({ length: 500, nullable: true })
+  @Column({ length: 5000, nullable: true })
   bankLetter: string; // Attached PDF (bank letter)
 
-  @Column({ length: 500, nullable: true })
+  @Column({ length: 5000, nullable: true })
   letterhead: string; // Attached PDF (letterhead)
+  // @Column('text', { nullable: true })
+  // contract: string;
+
+  // @Column('text', { nullable: true })
+  // bankLetter: string;
+
+  // @Column('text', { nullable: true })
+  // letterhead: string;
 
   @CreateDateColumn()
   createdAt: Date;
