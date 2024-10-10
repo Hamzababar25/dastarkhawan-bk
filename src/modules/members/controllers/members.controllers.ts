@@ -36,9 +36,7 @@ export class MemberController {
       
       console.log('Member Data without files:', memberData);  // Log member data without files
       
-      let contractUrl: string = null;
-      let letterheadUrl: string = null;
-      let bankstatementUrl: string = null;
+    
       let imageUrl: string = null;
 
 
@@ -47,31 +45,14 @@ export class MemberController {
         imageUrl = await UploadFile(image);
       }
   
-      if (contract) {
-        console.log('Contract found, uploading...');  // Check if the contract exists
-        contractUrl = await UploadPDF(contract);
-        console.log("done")
-      }
-  
-      if (letterhead) {
-        console.log('Letterhead found, uploading...');  // Check if the letterhead exists
-        letterheadUrl = await UploadPDF(letterhead);
-      }
-  
-      if (bankLetter) {
-        console.log('Bank letter found, uploading...');  // Check if the bank letter exists
-        bankstatementUrl = await UploadPDF(bankLetter);
-      }
-  
+      
      
   
       console.log('Saving member data with uploaded files...');
   
       const newMember = await this.memberService.create({
         ...memberData,
-        contract: contractUrl,
-        letterhead: letterheadUrl,
-        bankLetter: bankstatementUrl,
+    
         image: imageUrl,
       });
   
@@ -87,7 +68,15 @@ export class MemberController {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  
+  @Get('search')
+  async searchMemberByFullname(@Query('fullname') fullname: string) {
+    return this.memberService.findByFullname(fullname);
+  }
+  @Get()
+  async searchAllMembers() {
+    return this.memberService.getAll();
+  }
+
 }
 
 

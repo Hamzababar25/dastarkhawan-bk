@@ -21,4 +21,13 @@ export class MemberService {
 
     return this.memberRepository.save(newMember);
   }
+  async findByFullname(fullname: string): Promise<Member[]> {
+    return await this.memberRepository
+      .createQueryBuilder('member')
+      .where('member.fullname LIKE :fullname', { fullname: `%${fullname}%` })
+      .getMany();
+  }
+  async getAll(): Promise<Member[]> {
+    return await this.memberRepository.find()
+  }
 }

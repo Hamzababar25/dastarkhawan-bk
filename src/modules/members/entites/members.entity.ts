@@ -79,6 +79,8 @@ export class Member {
 
   @Column({ nullable: true })
   amount: number;
+  @Column({ length: 5000, nullable: true })
+  image: string;
 
   @CreateDateColumn()
   createdAt: Date;
