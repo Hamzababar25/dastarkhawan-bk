@@ -30,4 +30,12 @@ export class MemberService {
   async getAll(): Promise<Member[]> {
     return await this.memberRepository.find()
   }
+
+  async findOneById(id: string): Promise<Member> {
+  
+    // Use findOne method and pass the correct options
+    return this.memberRepository.findOne({
+      where: { id }, // id is of type number
+    });
+    }
 }

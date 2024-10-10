@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException,Request, HttpStatus, Logger, NotFoundException, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseInterceptors, UsePipes, UseGuards, Patch } from '@nestjs/common';
 import { InvalidRequestValidator } from 'src/common/pipes/invalid-request-validator';
 import { MemberService } from '../services/members.service';
-import { CreateMemberDto } from '../dtos/createmember.dto';
+import { CreateMemberDto, GetOneById } from '../dtos/createmember.dto';
 import { UploadFile, UploadPDF } from 'src/utils/file-uploading.utils';
 
 
@@ -76,7 +76,25 @@ export class MemberController {
   async searchAllMembers() {
     return this.memberService.getAll();
   }
-
+  @Get('/id')
+  @HttpCode(HttpStatus.OK)
+  @UsePipes(new InvalidRequestValidator())
+  async getUserByUsername(@Query() q: GetOneById) {
+    try {
+  
+      let user = await this.memberService.findOneById(q?.id);
+      if (!user) {
+        throw new HttpException(`Member Not Found`, HttpStatus.NOT_FOUND);
+      }
+      return {
+        success: true,
+        result: user,
+      };
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
 }
 
 

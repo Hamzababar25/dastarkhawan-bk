@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { IsString, IsOptional, IsEmail, IsInt, IsDate, IsNotEmpty } from 'class-validator';
 @Exclude()
 export class CreateMemberDto {
@@ -64,5 +64,16 @@ export class CreateMemberDto {
   @IsString()
   letterhead?: string;
   
+
+
+  
  
+}
+
+@Exclude()
+export class GetOneById {
+  @Expose()
+  @IsString()
+ 
+  public readonly id: string;
 }
