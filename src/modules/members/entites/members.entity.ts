@@ -72,7 +72,9 @@ export class Member {
   };
 
   @Column({ nullable: true })
-  tenure: string;
+  tenureStart: string;
+  @Column({ nullable: true })
+  tenureEnd: string;
 
   @Column({ nullable: true })
   monthlyInvoice: number;

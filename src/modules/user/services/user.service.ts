@@ -57,8 +57,14 @@ export class UserService {
   }
 
   async create(userData: CreateUserDto): Promise<User> {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
+  
+    // Replace the plain password with the hashed password
+    userData.password = hashedPassword;
     const newMember = this.userRepository.create(userData);
-
+    
+   
     // Ensure all required fields are filled out
     if (!newMember.fullname || !newMember.mail) {
       throw new Error('Missing required fields: fullname or mail');
