@@ -38,4 +38,8 @@ export class MemberService {
       where: { id }, // id is of type number
     });
     }
+    async save(user: Partial<Member>): Promise<Member> {
+      return await this.memberRepository.save(user);
+    }
+  
 }

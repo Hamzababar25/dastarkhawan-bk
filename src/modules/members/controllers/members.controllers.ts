@@ -95,6 +95,48 @@ export class MemberController {
       throw e;
     }
   }
+
+  @Patch('/id')
+  @UsePipes(new InvalidRequestValidator())
+  @HttpCode(HttpStatus.OK)
+  // @UseInterceptors(FileInterceptor('image')) // If you have only one image upload in PUT request
+  async update(@Query() q: GetOneById, @Body() bd: any) {
+    try {
+      let user = await this.memberService.findOneById(q?.id);
+      if (!user) {
+        throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
+      }
+      let img: string = null
+      
+  
+      if (bd?.file)
+      {
+           img=await UploadFile(bd.file);
+           
+      }
+      
+      // Save the updated user entity
+     
+      if(img)
+      {user.image=img
+        
+      }
+     
+  
+    
+  
+      const updatedUser = await this.memberService.save({ ...user, ...bd });
+  
+      return {
+        success: true,
+        result: updatedUser,
+      };
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
+  
 }
 
 
