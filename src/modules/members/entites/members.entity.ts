@@ -81,6 +81,11 @@ export class Member {
 
   @Column({ nullable: true })
   amount: number;
+  @Column({ nullable: true })
+  nature: number;
+  @Column({ nullable: true })
+  status: string;
+  
   @Column({ length: 5000, nullable: true })
   image: string;
 
