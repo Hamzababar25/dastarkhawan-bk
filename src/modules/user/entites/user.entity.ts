@@ -1,16 +1,37 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export enum UserRole {
-  STAFF = 'staff',
-  SUPERADMIN = 'superadmin',
-  DEPTS = 'depts',
-  CA = 'ca',
-  CEO = 'ceo',
+  CEO  = 'ceo_coo',
+  Coo='coo',
+  REGIONAL_MANAGER = 'regional_manager',
+  COMMUNITY_EXECUTIVE = 'community_executive',
+  COMMUNITY_ASSOCIATE = 'community_associate',
+  FRONT_DESK_OFFICER = 'front_desk_officer',
+  FACILITY_MANAGER = 'facility_manager',
+  ADMIN_MANAGER = 'admin_manager',
+  IT_TEAM = 'it_team',
+  IT_HEAD = 'it_head',
+  BUILDOUT = 'buildout',
+  FINANCE_TEAM = 'finance_team',
+  SALES_TEAM = 'sales_team',
+  HEAD_OF_SALES = 'head_of_sales',
+  HEAD_OF_MARKETING = 'head_of_marketing',
+  MARKETING_TEAM = 'marketing_team',
+  PEOPLE_CULTURE_HEAD = 'people_culture_head',
+  YELLOW_BAR = 'yellow_bar',
+  SUPERVISOR = 'supervisor'
 }
+
+
 export enum DeptRole {
-  IT_GUY = 'it_guy',
+FINANCE='finance',
   ADMIN = 'admin',
-  FACILITY_GUY = 'facility_guy',
+  FACILITY = 'facility',
+  BUILDOUT='buildout',
+  PROCUREMENT='procurement',
+  PARTNERSHIPS='partnerships',
+  PC='pc',
+  EXPERIENCE='experience',
 }
 @Entity()
 export class User {
@@ -35,8 +56,9 @@ export class User {
   @Column({ length: 500, nullable: true })
   location: string; // Link to space health page
 
-  @Column({ nullable: true })
-  role: string;
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.CEO, })
+  role: UserRole;
+  
 
   @Column({ nullable: true })
   cnic: number;

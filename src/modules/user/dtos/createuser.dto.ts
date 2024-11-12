@@ -129,7 +129,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  role?: string;
+  role: UserRole; 
 
   @IsOptional()
   @IsInt()

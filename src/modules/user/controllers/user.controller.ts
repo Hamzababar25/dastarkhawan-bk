@@ -289,6 +289,29 @@ async updateUser(
     throw e;
   }
   }
+
+  @Get('get/users-by-location')
+  @HttpCode(HttpStatus.OK)
+  async findUsersByLocation(@Query() q: GetOneById) {
+    try {
+      // Fetch the current user based on the provided ID
+      const currentUser = await this.userService.findOneById(q.id);
+      
+      if (!currentUser) {
+        throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
+      }
+
+      // Get all users with the same location as the current user
+      const users = await this.userService.findUsersByLocation(currentUser.location);
+
+      return {
+        success: true,
+        result: users,
+      };
+    } catch (e) {
+      throw new HttpException(e.message, e.status || HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }
 
 

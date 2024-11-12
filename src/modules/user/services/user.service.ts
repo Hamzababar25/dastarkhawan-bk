@@ -72,6 +72,10 @@ export class UserService {
 
     return this.userRepository.save(newMember);
   }
-
+  async findUsersByLocation(location: string): Promise<User[]> {
+    return this.userRepository.find({
+      where: { location },
+    });
+  }
 
 }
