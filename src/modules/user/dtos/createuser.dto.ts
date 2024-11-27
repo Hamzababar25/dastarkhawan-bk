@@ -127,6 +127,10 @@ export class CreateUserDto {
   @IsString()
   location?: string;
 
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
   @IsOptional()
   @IsString()
   role: UserRole; 
@@ -159,6 +163,10 @@ export class CreateUserDto {
   @IsInt()
   salary?: number;
 
+
+  @IsOptional()
+  @IsInt()
+  accessLevel?:number;
   @IsOptional()
   @IsString()
   Delegate?: string;

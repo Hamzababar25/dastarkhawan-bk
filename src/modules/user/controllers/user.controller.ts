@@ -40,62 +40,106 @@ export class UserController {
 
 
 
-@Post('create')
-  @UsePipes(new InvalidRequestValidator())
-  @HttpCode(HttpStatus.OK)
-async create(@Body() createduser: CreateUserDto) {
-  try{
+// @Post('create')
+//   @UsePipes(new InvalidRequestValidator())
+//   @HttpCode(HttpStatus.OK)
+// async create(@Body() createduser: CreateUserDto) {
+//   try{
  
-    const { contract, letterhead, bankLetter, image, ...memberData } = createduser;
-    console.log('Member Data without files:', memberData);  // Log member data without files
+//     const { contract, letterhead, bankLetter, image, ...memberData } = createduser;
+//     console.log('Member Data without files:', memberData);  // Log member data without files
       
-      let contractUrl: string = null;
-      let letterheadUrl: string = null;
-      let bankstatementUrl: string = null;
-      let imageUrl: string = null;
+//       let contractUrl: string = null;
+//       let letterheadUrl: string = null;
+//       let bankstatementUrl: string = null;
+//       let imageUrl: string = null;
 
 
-      if (image) {
-        console.log('Image found, uploading...');  // Check if the image exists
-        imageUrl = await UploadFile(image);
-      }
+//       if (image) {
+//         console.log('Image found, uploading...');  // Check if the image exists
+//         imageUrl = await UploadFile(image);
+//       }
   
-      if (contract) {
-        console.log('Contract found, uploading...');  // Check if the contract exists
-        contractUrl = await UploadPDF(contract);
-        console.log("done")
-      }
+//       if (contract) {
+//         console.log('Contract found, uploading...');  // Check if the contract exists
+//         contractUrl = await UploadPDF(contract);
+//         console.log("done")
+//       }
   
-      if (letterhead) {
-        console.log('Letterhead found, uploading...');  // Check if the letterhead exists
-        letterheadUrl = await UploadPDF(letterhead);
-      }
+//       if (letterhead) {
+//         console.log('Letterhead found, uploading...');  // Check if the letterhead exists
+//         letterheadUrl = await UploadPDF(letterhead);
+//       }
   
-      if (bankLetter) {
-        console.log('Bank letter found, uploading...');  // Check if the bank letter exists
-        bankstatementUrl = await UploadPDF(bankLetter);
-      }
+//       if (bankLetter) {
+//         console.log('Bank letter found, uploading...');  // Check if the bank letter exists
+//         bankstatementUrl = await UploadPDF(bankLetter);
+//       }
   
      
-      const newMember = await this.userService.create({
-        ...memberData,
-        contract: contractUrl,
-        letterhead: letterheadUrl,
-        bankLetter: bankstatementUrl,
-        image: imageUrl,
-      });
+//       const newMember = await this.userService.create({
+//         ...memberData,
+//         contract: contractUrl,
+//         letterhead: letterheadUrl,
+//         bankLetter: bankstatementUrl,
+//         image: imageUrl,
+//       });
   
-      console.log('Saving member data with uploaded files...');
-  // const user = await this.userService.createUser(createduser);
+//       console.log('Saving member data with uploaded files...');
+//   // const user = await this.userService.createUser(createduser);
 
-  return{
-    success: true,
-    result: newMember,
-   };
-}catch (e) {
-  this.logger.error(e);
-  throw e;
-}
+//   return{
+//     success: true,
+//     result: newMember,
+//    };
+// }catch (e) {
+//   this.logger.error(e);
+//   throw e;
+// }
+// }
+
+
+@Post('create')
+@HttpCode(HttpStatus.OK)
+async create(@Body() createUserDto: CreateUserDto) {
+  try {
+    const { role, location, image, contract, letterhead, bankLetter, ...rest } = createUserDto;
+
+    let contractUrl = null;
+    let letterheadUrl = null;
+    let bankLetterUrl = null;
+    let imageUrl = null;
+
+    // Upload files
+    if (image) imageUrl = await UploadFile(image);
+    if (contract) contractUrl = await UploadPDF(contract);
+    if (letterhead) letterheadUrl = await UploadPDF(letterhead);
+    if (bankLetter) bankLetterUrl = await UploadPDF(bankLetter);
+
+    // Fetch access level and delegate
+    // const accessLevel = getAccessLevel(role);
+    // const delegateUser = await this.userService.getDelegate(role, location,);
+
+    // Create user
+    // console.log(imageUrl,contractUrl,letterheadUrl,bankLetterUrl)
+    const newUser = await this.userService.create({
+      ...rest,
+      role,
+      location,
+      image: imageUrl,
+      contract: contractUrl,
+      letterhead: letterheadUrl,
+      bankLetter: bankLetterUrl,
+    });
+
+    return {
+      success: true,
+      data: newUser,
+    };
+  } catch (error) {
+    this.logger.error(error);
+    throw new HttpException('Error creating user', HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
 
 @Get('/username')
